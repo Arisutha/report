@@ -1,0 +1,18 @@
+{
+	"bundle" : "jquery-validation",
+	"assets" : [
+		{
+			"locations":{
+				"webapp":"/assets/js/languages/jquery.validationEngine-en.js"
+			}
+		},{
+			"locations":{
+				"webapp":"/assets/js/jquery.validationEngine.js"
+			}
+		},{
+			"locations":{
+				"webapp":"/assets/js/book.js"
+			}			
+		}
+	]
+}
