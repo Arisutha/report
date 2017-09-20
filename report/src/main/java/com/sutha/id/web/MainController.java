@@ -173,7 +173,7 @@ public class MainController extends BaseController{
 		}
 		return response;
 	}
-	@ResponseBody
+	
 	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	public void insertBook(HttpServletRequest req, HttpServletResponse response, @RequestBody String data){
 		//konversi json to book model
@@ -182,6 +182,7 @@ public class MainController extends BaseController{
 			Book book = mapper.readValue(data, Book.class);
 			this.bookService.insertBook(book);
 			map.put("message", "sukses menyimpan data");
+			//jika tidak memakai @ResponseBody harus menggunakan method this.encodeToJson
 			this.encodeToJson(response, map);
 		} catch(Exception e) {
 			log.error(e.getMessage(), e);
@@ -208,18 +209,22 @@ public class MainController extends BaseController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-	public void deleteBook(HttpServletRequest req, HttpServletResponse resp, @PathVariable("id") Long id){
+	public Map<String, Object> deleteBook(HttpServletRequest req, HttpServletResponse resp, @PathVariable("id") Long id){
 		Book book = new Book();
 		book.setId(id);		
 		try {
 			if(bookService.getBook(id) == null){
 				map.put("message", "Data Buku tidak ditemukan");
-				this.encodeToJson(resp, map);
+				//jika memakai @ResponseBody tidak perlu menggunakan method
+				//this.encodeToJson(resp, map);
+				
+				return map;
 			}else{
 				//hapus book
 				bookService.deleteBook(book);
 				map.put("message", "Sukses menghapus data buku dengan id: "+book.getId());
-				this.encodeToJson(resp, map);
+				//this.encodeToJson(resp, map);
+				return map;
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
